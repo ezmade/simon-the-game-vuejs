@@ -1,17 +1,16 @@
 <template>
-  <button :class="buttonClasses" @click="handleClick" ref="button" />
+  <button :class="tileClasses" @click="handleClick" ref="tile" />
 </template>
 
 <script>
 export default {
   name: "Tile",
-
   props: {
-      index: {
+      indx: {
           type: Number,
           required: true
       },
-      name: {
+      file: {
           type: String,
           required: true
       },
@@ -27,26 +26,85 @@ export default {
     };
   },
 
-  computed: {
+  created() {
+      const path = require('../assets/sounds/'+this.file);
+      this.sound = new Audio(path);
+  },
 
+  computed: {
+    tileClasses() {
+			return ['tile', this.color];
+		},
   }, 
 
   methods: {
+
       play() {
           this.sound.play();
+          this.$refs.tile.classList.add('active');
+          setTimeout(() => {
+            this.$refs.tile.classList.remove('active');
+          }, 400);
       },
 
       handleClick() {
-          this.play();
+        this.play();
+        console.log(this.indx)
+        this.$emit('click', this.indx)
       }
   },
-
-  created() {
-      const path = require('../assets/sounds/'+this.name);
-      this.sound = new Audio(path);
-  }
 };
 </script>
 
-<style>
+<style scoped>
+  .tile {
+    width: inherit;
+		height: inherit;
+		border: none;
+  }
+
+  .tile:focus {
+    box-shadow: inset 0px 0px 50px 0 rgba(0, 0, 0, 0.25);
+		outline: none
+  }
+
+  .tile.red {
+    background-color: red;
+  }
+  .tile.red.active {
+    background-color: tomato;
+  }
+  .tile.red:hover {
+    background-color: crimson;
+  }
+
+  .tile.green {
+    background-color: green;
+  }
+  .tile.green.active {
+    background-color: darkseagreen;
+  }
+  .tile.green:hover {
+    background-color: darkgreen;
+  }
+
+  .tile.blue {
+    background-color: blue;
+  }
+  .tile.blue.active {
+    background-color: royalblue;
+  }
+  .tile.blue:hover {
+    background-color: darkblue;
+  }
+
+  .tile.yellow {
+    background-color: yellow;
+  }
+  .tile.yellow.active {
+    background-color: khaki;
+  }
+  .tile.yellow:hover {
+    background-color: orange;
+  }
 </style>
