@@ -8,12 +8,14 @@
             :color="item.color"
             :file="item.file"
             :ref="this.setTileRef"
+            :disabled="game.isDisabled"
             @click="handleTileClick"
           />
         </li>
       </ul>
+      <h2 class="rounds">Раунд: {{ game.round }}</h2>
       <button class="btn" @click="startGame">Start</button>
-      <span v-show="game.isOver" class="result">Вы проиграли после {{ game.round }} раундов!</span>
+      <h3 v-show="game.isOver" class="result">Вы проиграли после {{ game.round }} раундов!</h3>
     </section>
 
     <section class="scores"></section>
@@ -57,6 +59,7 @@ export default {
         current: 0,
         sequence: [],
         currentTile: null,
+        isDisabled: true
       },
       settings: {
         difficulty: "easy",
@@ -117,6 +120,7 @@ export default {
     },
 
     startGame() {
+      this.game.isDisabled = false;
       this.resetGameProgress();
       this.makeStep();
     },
@@ -140,6 +144,7 @@ export default {
         this.game.tileRefs[indx].play();
         await this.sleep(this.getInterval());
       }
+      this.game.isDisabled = false;
     },
 
     generateNextTile() {
@@ -151,22 +156,26 @@ export default {
     },
 
     handleTileClick(indx) {
-      if (!this.game.round) return;
-
-      const currentIndex = this.game.sequence[this.game.current];
-      console.log(this.game.isOver)
-      if (indx === currentIndex) {
-        this.addCurrent();
-      } else {
-        this.game.isOver = true;
+      if (this.game.isOver) {
+        this.game.isDisabled = true;
       }
+      if (indx < 4){
+        const currentIndex = this.game.sequence[this.game.current];
+        if (indx === currentIndex) {
+          this.addCurrent();
+        } else {
+          this.game.isOver = true;
+        }
+      }
+        
     },
 
     async addCurrent() {
       if (this.game.current !== this.game.round - 1) {
         this.game.current++;
       } else {
-        await this.sleep(1500);
+        this.game.isDisabled = true;
+        await this.sleep(1000);
         this.makeStep();
       }
     },

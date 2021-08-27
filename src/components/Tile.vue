@@ -1,5 +1,5 @@
 <template>
-  <button :class="tileClasses" @click="handleClick" ref="tile" />
+  <input type="button" :class="tileClasses" @click="handleClick" ref="tile" />
 </template>
 
 <script>
@@ -49,7 +49,6 @@ export default {
 
       handleClick() {
         this.play();
-        console.log(this.indx)
         this.$emit('click', this.indx)
       }
   },
@@ -69,42 +68,29 @@ export default {
   }
 
   .tile.red {
-    background-color: red;
-  }
-  .tile.red.active {
     background-color: tomato;
   }
-  .tile.red:hover {
-    background-color: crimson;
+  .tile.red.active {
+    background-color: red;
   }
-
   .tile.green {
-    background-color: green;
-  }
-  .tile.green.active {
     background-color: darkseagreen;
   }
-  .tile.green:hover {
-    background-color: darkgreen;
+  .tile.green.active {
+    background-color: green;
   }
 
   .tile.blue {
-    background-color: blue;
-  }
-  .tile.blue.active {
     background-color: royalblue;
   }
-  .tile.blue:hover {
-    background-color: darkblue;
+  .tile.blue.active {
+    background-color: blue;
   }
 
   .tile.yellow {
-    background-color: yellow;
-  }
-  .tile.yellow.active {
     background-color: khaki;
   }
-  .tile.yellow:hover {
-    background-color: orange;
+  .tile.yellow.active {
+    background-color: yellow;
   }
 </style>
